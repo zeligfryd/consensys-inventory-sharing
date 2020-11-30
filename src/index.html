@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Inventory Sharing</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+
+
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-push-2">
+          <h1 id="pageTitle" class="text-center">Inventory Sharing</h1>
+          <hr/>
+          <br/>
+        </div>
+      </div>
+
+      <nav class="navbar navbar-default">
+        <h4 class="navbar-text">Current Account: <span id="currentAddress">0x0</span></h4>  
+      </nav>
+
+      <!-- Admin view --> 
+      <div id="adminView" style="display: none;">
+        <div class="container">
+          <div>
+            <div>
+              <h2>Add Admin</h2>
+                <p>Enter the address below</p>
+                <form id="addAdmin">
+                  <input id="adminAddrAdd" type="text">
+                  <input class="btn btn-success btn-add-admin" type="submit" value="Add">
+                </form>    
+            </div>
+
+            <div>
+              <h2>Remove Admin</h2>
+              <p>Enter the address below</p>
+                <form id="removeAdmin">
+                  <input id="adminAddrRem" type="text">
+                  <input class="btn btn-danger btn-remove-admin" type="submit" value="Remove">
+                </form>    
+            </div>
+            <div>
+              <h2>Add Dealer</h2>
+                <p>Enter the address below</p>
+                <form id="addDealer">
+                  <input id="dealerAddrAdd" type="text">
+                  <input class="btn btn-success btn-add-admin" type="submit" value="Add">
+                </form>    
+            </div>
+
+            <div>
+              <h2>Remove Dealer</h2>
+              <p>Enter the address below</p>
+                <form id="removeDealer">
+                  <input id="dealerAddrRem" type="text">
+                  <input class="btn btn-danger btn-remove-admin" type="submit" value="Remove">
+                </form>    
+            </div>
+          </div>
+        </div>
+
+        <!-- Manage Catalogue -->
+          <div>
+            <h1>Manage Catalogue Items</h1>
+            <h2>Add an Item</h2>
+              <form id="addCatalogueItem">
+                Item name: 
+                <input id="itemName" type="text"> </br></br>
+                Item description: 
+                <input id="itemDesc" type="text"> </br></br>
+                Reference Price in ETH: 
+                <input id="itemReferencePrice" type="number" min="0" step="any"> </br> </br>
+                Incentive in ETH: 
+                <input id="itemIncentive" type="number" min="0" step="any"> </br> </br>
+                <input class="btn btn-success btn-add-catalogue" type="submit" value="Add Item">
+              </form>
+          </div>
+
+          <!-- Catalogue items -->
+          <div>
+            <h2>Catalogue Items</h2>
+            <div id="catalogueItems">
+              <!-- Here list -->
+            </div>
+            <div id="catalogueItemsTemplate" style="display: none;">
+              <div class="panel panel-default col-xs-12 col-sm-5 col-sm-offset-1">
+                <p>Name: <span id="catalogueItemName"></span></p>
+                <p>Description: <span id="catalogueItemDescription"></span></p>
+                <p>Reference Price: <span id="catalogueItemReferencePrice"></span></p>
+                <p>Incentive: <span id="catalogueItemIncentive"></span></p>
+                <p>Active: <span id="catalogueItemActive"></span></p>
+
+                <button class="btn btn-default btn-danger" id="removeCatalogueItem" type="button" data-id="0">Remove</button>
+                <button class="btn btn-default btn-success" id="reactivateCatalogueItem" type="button" data-id="0">Reactivate</button>
+                
+                <form id="changePrice" style="display: none;">
+                  <h5>Change price:</h5> 
+                  New Reference Price in ETH: 
+                  <input id="itemNewReferencePrice" name="price" type="number" min="0" step="any"> </br> </br>
+                  New Incentive in ETH: 
+                  <input id="itemNewIncentive" name="incentive" type="number" min="0" step="any"> </br> </br>
+                  <input type="hidden" id="itemID" name="id" value="0x">
+                  <input class="btn btn-success btn-changeprice" type="submit" value="Change price">
+                </form>
+              </div>
+            </div>
+          </div>
+
+      </div> 
+
+      <!-- Dealer view -->
+      <div id="dealerView" style="display: none;">
+        <div id="balance">
+          <h4>Balance: <span id="dealerBalance"> 0 </span></h4>
+          <form id="withdrawBalance" style="display: none;">
+            <input class="btn btn-success btn-withdraw" type="submit" value="Withdraw">
+          </form>
+        </div>
+
+        <div class="container">
+          <h2>Items in Inventory</h2>
+          <div id="inventoryItems">
+          </div>
+          <div id="inventoryItemTemplate" style="display: none;">
+            <div class="panel panel-default col-xs-12 col-sm-5 col-sm-offset-1">
+                <div class="panel-body">
+                  <h4 id=inventoryItemName>Name</h3>
+                  <p> <span id="inventoryItemDescription"> Description </span></p>
+                  <p>Quantity in stock: <span id="inventoryItemStock"> 0 </span></p>
+                  <p>Quantity available for sharing: <span id="inventoryItemSharing"> 0 </span></p>
+                  <p>Reference Price: <span id="inventoryItemReferencePrice"> 0 </span> Ξ</p>
+                  <p>Incentive: <span id="inventoryItemIncentive">0</span></p>
+                  <span id="inventoryItemID" style="display: none;"></span>
+                  <br>
+  
+                  <form id="updateWithQuatitySold" style="display: none;">
+                    <h5>Update with quantity sold:</h5> 
+                    Quantity sold: 
+                    <input id="soldQty" type="number" name="qty" min="1">
+                    <input type="hidden" id="itemID" name="id" value="0x">
+                    <input class="btn btn-success btn-updatesold" type="submit" value="Sold">
+                  </form>
+                  <form id="updateSharing" style="display: none;">
+                    <h5>Update quantity available for sharing:</h5> 
+                    Quantity to be shared: 
+                    <input id="shareQty" type="number" name="qty" min="1">
+                    <input type="hidden" id="itemID" name="id" value="0x">
+                    <input class="btn btn-success btn-updatesharing" type="submit" value="Add">
+                  </form>
+
+                </div>
+              </div>
+          </div>
+        </div>
+      
+
+        <div class="container">
+          <h2>Catalogue Items</h2>
+          <div id="catalogueItemsDealer">
+          </div>
+          <div id="catalogueItemDealerTemplate" style="display: none;">
+            <div class="panel panel-default col-xs-12 col-sm-5 col-sm-offset-1">
+                <div class="panel-body">
+                  <h4 id=catalogueItemDealerName>Name</h3>
+                  <p> <span id="catalogueItemDealerDescription"> Description </span></p>
+                  <p>Reference Price: <span id="catalogueItemDealerReferencePrice"> 0 </span> Ξ</p>
+                  <p>Incentive: <span id="catalogueItemDealerIncentive">0</span></p>
+                  <span id="catalogueItemDealerID" style="display: none;"></span>
+                  <br>
+  
+                  <form id="restockFromManufacturer" style="display: none;">
+                    <h5>Restock from manufacturer:</h5> 
+                    Quantity: 
+                    <input id="restockQty" type="number" name="qty" min="1">
+                    <input type="hidden" id="itemID" name="id" value="0x">
+                    <input type="hidden" id="referencePrice" name="price" value=0>
+                    <input class="btn btn-success btn-restock" type="submit" value="Buy">
+                  </form>
+
+                  <br>
+                  <h5>Restock from other dealers:</h5> 
+                  <!-- <input id="toggleRestockFromDealer" class="btn btn-success btn-show" value="Show"> -->
+                  <div id="otherDealersItems">
+                  </div>
+                  <div id="otherDealersItemTemplate" style="display: none;">
+                    <div class="panel panel-default col-sm-offset-1">
+                      <div class="panel-body">
+                        <p>Dealer: <span id="otherDealerAddress"> 0x </span></p>
+                        <p>Quantity available: <span id="otherDealerItemQuantityAvailable"> 0 </span></p>
+                        <p>Discounted price: <span id="otherDealerItemDiscountedPrice"> 0 </span></p>
+                        <span id="otherDealerItemID" style="display: none;"></span>
+        
+                        <form id="restockFromDealer" style="display: none;">
+                          
+                          Quantity: 
+                          <input id="restockQty" type="number" name="qty" min="1">
+                          <input type="hidden" id="itemID" name="id" value="0x">
+                          <input type="hidden" id="dealerAddress" name="dealer" value="0x">
+                          <input type="hidden" id="referencePrice" name="price" value=0>
+                          <input type="hidden" id="incentive" name="incentive" value=0>
+                          <input class="btn btn-success btn-restock" type="submit" value="Buy">
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+        </div>
+
+      </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
