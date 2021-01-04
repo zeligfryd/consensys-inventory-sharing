@@ -32,8 +32,8 @@ frontend using a local http-server.
 
 To get strated, clone this project and navigate to the projects folder
 
-    git clone XXX
-    cd XXX
+    git clone https://github.com/zeligfryd/consensys-inventory-sharing
+    cd consensys-inventory-sharing
 
 Install all local dependencies needed for this project
 
