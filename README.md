@@ -27,10 +27,10 @@ To run this project, you will need:
 ### Running the project locally
 
 Using this method you will compile and migrate the smart contract yourself with the help of a
-[local development blockchain](https://github.com/trufflesuite/ganache-cli) and serve the Angular
+[local development blockchain](https://github.com/trufflesuite/ganache-cli) and serve the
 frontend using a local http-server.
 
-To get strated, clone this project and navigate to the projects folder
+To get started, clone this project and navigate to the project folder
 
     git clone https://github.com/zeligfryd/consensys-inventory-sharing
     cd consensys-inventory-sharing
